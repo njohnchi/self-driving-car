@@ -10,10 +10,10 @@ class Controls {
         this.left = false;
         this.right = false;
 
-        this._addKeyboardListener();
+        this.addKeyboardListener();
     }
 
-    private _addKeyboardListener() {
+    private addKeyboardListener() {
         document.onkeydown = (e) => {
             switch (e.key) {
                 case 'ArrowUp':
@@ -29,7 +29,6 @@ class Controls {
                     this.right = true;
                     break;
             }
-            console.table(this);
         }
         document.onkeyup = (e) => {
             switch (e.key) {
@@ -46,7 +45,6 @@ class Controls {
                     this.right = false;
                     break;
             }
-            console.table(this);
         }
     }
 }

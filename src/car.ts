@@ -35,10 +35,10 @@ class Car {
     }
 
     update() {
-        this._move();
+        this.move();
     }
 
-    private _move() {
+    protected move() {
         if (this.controls.forward) {
             this.speed += this.acceleration;
         }
