@@ -1,11 +1,12 @@
 import { lerp } from './utils';
+import {Point} from "./types.ts";
 
 class Road {
     left: number;
     right: number;
     top: number;
     bottom: number;
-    borders: Array<Array<{ x: number, y: number }>>;
+    borders: Point[][];
 
     constructor(
         public x: number,

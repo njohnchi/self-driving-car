@@ -1,5 +1,6 @@
 import { Controls } from "./controls";
 import { Sensor } from "./sensor.ts";
+import {Point} from "./types.ts";
 
 class Car {
     speed: number;
@@ -38,9 +39,9 @@ class Car {
         this.sensor.draw(ctx);
     }
 
-    update() {
+    update(roadBorders: Point[][]) {
         this.move();
-        this.sensor.update();
+        this.sensor.update(roadBorders);
     }
 
     protected move() {
