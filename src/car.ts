@@ -1,6 +1,7 @@
 import { Controls } from "./controls";
 import { Sensor } from "./sensor.ts";
 import {Point} from "./types.ts";
+import {polysIntersect} from "./utils.ts";
 
 class Car {
     speed: number;
@@ -11,6 +12,7 @@ class Car {
     angle: number;
     sensor: Sensor;
     polygon: Point[];
+    damaged: boolean;
 
     constructor(
         public x: number,
@@ -26,9 +28,15 @@ class Car {
         this.controls = new Controls();
         this.sensor = new Sensor(this);
         this.polygon = this.createPolygon();
+        this.damaged = false;
     }
 
     draw(ctx: CanvasRenderingContext2D) {
+        if (this.damaged) {
+            ctx.fillStyle = 'gray';
+        } else {
+            ctx.fillStyle = 'black';
+        }
         ctx.beginPath()
         ctx.moveTo(this.polygon[0].x, this.polygon[0].y);
         for (let i = 1; i < this.polygon.length; i++) {
@@ -40,9 +48,21 @@ class Car {
     }
 
     update(roadBorders: Point[][]) {
-        this.move();
-        this.polygon = this.createPolygon();
+        if (!this.damaged) {
+            this.move();
+            this.polygon = this.createPolygon();
+            this.damaged = this.assessDamage(roadBorders);
+        }
         this.sensor.update(roadBorders);
+    }
+
+    private assessDamage(roadBorders: Point[][]): boolean {
+        for (let i = 0; i < roadBorders.length; i++) {
+            if (polysIntersect(this.polygon, roadBorders[i])) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private createPolygon(): Point[] {
